@@ -1,8 +1,6 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, LayoutDashboard, User, Clock } from 'lucide-react';
 import { useChallenge } from '../context/ChallengeContext';
-import { useAuth } from '../context/AuthContext';
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -11,9 +9,7 @@ function formatDate(iso) {
 
 function DayCard({ day }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className={`card border-r-4 text-right ${
         day.status === 'completed' ? 'border-r-nature-500' :
         day.status === 'compensated' ? 'border-r-calm-400' :
@@ -36,33 +32,26 @@ function DayCard({ day }) {
           {day.description && (
             <p className="text-warm-500 text-sm line-clamp-2">{day.description}</p>
           )}
-          {day.summary && (
-            <div className="mt-2 bg-nature-50 rounded-xl p-2.5 text-xs">
-              <p className="text-nature-700 font-medium">🤖 {day.summary.accomplished}</p>
-              <p className="text-warm-400 mt-0.5 flex items-center gap-1">
-                {'⭐'.repeat(day.summary.rating || 0)}
-              </p>
-            </div>
-          )}
+
         </div>
         <div className="text-xs text-warm-300 flex items-center gap-1 flex-shrink-0 mr-3 mt-1">
           <Clock size={10} />
           {formatDate(day.completedAt || day.missedAt)}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function Dashboard() {
   const { challenge, stats, todayDay } = useChallenge();
-  const { user } = useAuth();
 
   if (!challenge) return null;
 
   const doneDays = challenge.days.filter(d => d.status === 'completed' || d.status === 'compensated');
   const startDate = new Date(challenge.startDate);
-  const daysPassed = Math.floor((Date.now() - startDate) / 86400000) + 1;
+  // Pure way to get current time for render calculation
+  const daysPassed = Math.floor((new Date().setHours(0,0,0,0) - new Date(startDate).setHours(0,0,0,0)) / 86400000) + 1;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-light via-nature-50 to-sand-100 pb-24" dir="rtl">
@@ -73,9 +62,7 @@ export default function Dashboard() {
 
       <div className="max-w-lg mx-auto px-4 pt-6 space-y-6">
         {/* Today Status card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="card-glass"
         >
           <h2 className="font-display font-bold text-warm-700 mb-4 flex items-center gap-2">
@@ -98,7 +85,7 @@ export default function Dashboard() {
 
           {todayDay && (
             <Link to="/map">
-              <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
+              <div
                 className="mt-4 bg-nature-500 text-white rounded-2xl p-4 flex items-center justify-between cursor-pointer"
               >
                 <div>
@@ -106,7 +93,7 @@ export default function Dashboard() {
                   <p className="text-nature-200 text-sm">انقر لإنجاز مهمة اليوم</p>
                 </div>
                 <span className="text-3xl">▶️</span>
-              </motion.div>
+              </div>
             </Link>
           )}
 
@@ -116,7 +103,7 @@ export default function Dashboard() {
               <p className="font-display font-bold text-nature-700">أتممت التحدي بنجاح!</p>
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* History List */}
         <div>

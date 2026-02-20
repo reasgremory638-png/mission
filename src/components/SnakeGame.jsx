@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { useChallenge } from '../context/ChallengeContext';
 
 const CELL = 20;
@@ -20,7 +19,7 @@ function randFood(snake) {
 }
 
 export default function SnakeGame({ onClose }) {
-  const { updateSnakeScore, challenge } = useChallenge();
+  const { updateSnakeScore } = useChallenge();
   const canvasRef = useRef();
   const stateRef = useRef({
     snake: [[8, 8], [7, 8], [6, 8]],
@@ -42,11 +41,9 @@ export default function SnakeGame({ onClose }) {
     const ctx = canvas.getContext('2d');
     const s = stateRef.current;
 
-    // Background
     ctx.fillStyle = '#f0f7ee';
     ctx.fillRect(0, 0, W, H);
 
-    // Grid
     ctx.strokeStyle = '#dcefd8';
     ctx.lineWidth = 0.5;
     for (let x = 0; x <= COLS; x++) {
@@ -56,12 +53,12 @@ export default function SnakeGame({ onClose }) {
       ctx.beginPath(); ctx.moveTo(0, y * CELL); ctx.lineTo(W, y * CELL); ctx.stroke();
     }
 
-    // Snake
     s.snake.forEach(([x, y], i) => {
       const isHead = i === 0;
       ctx.fillStyle = isHead ? '#388e3c' : '#6aaf3a';
       ctx.beginPath();
-      ctx.roundRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2, isHead ? 6 : 4);
+      // Basic rect for browsers that don't support roundRect or just to be safe
+      ctx.rect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
       ctx.fill();
 
       if (isHead) {
@@ -72,7 +69,6 @@ export default function SnakeGame({ onClose }) {
       }
     });
 
-    // Food (apple emoji using text)
     ctx.font = `${CELL - 2}px serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -86,7 +82,6 @@ export default function SnakeGame({ onClose }) {
     s.dir = s.nextDir;
     const head = [s.snake[0][0] + s.dir[0], s.snake[0][1] + s.dir[1]];
 
-    // Wall collision
     if (head[0] < 0 || head[0] >= COLS || head[1] < 0 || head[1] >= ROWS) {
       s.over = true; s.running = false;
       updateSnakeScore(s.score);
@@ -94,7 +89,6 @@ export default function SnakeGame({ onClose }) {
       return;
     }
 
-    // Self collision
     if (s.snake.some(([x, y]) => x === head[0] && y === head[1])) {
       s.over = true; s.running = false;
       updateSnakeScore(s.score);
@@ -143,7 +137,6 @@ export default function SnakeGame({ onClose }) {
       if (!d) return;
       e.preventDefault();
       const s = stateRef.current;
-      // Prevent reversing
       if (d[0] === -s.dir[0] && d[1] === -s.dir[1]) return;
       s.nextDir = d;
     };
@@ -151,7 +144,6 @@ export default function SnakeGame({ onClose }) {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  // Mobile swipe controls
   const touchStart = useRef(null);
   const handleTouchStart = (e) => {
     touchStart.current = [e.touches[0].clientX, e.touches[0].clientY];
@@ -189,13 +181,12 @@ export default function SnakeGame({ onClose }) {
           width={W}
           height={H}
           className="rounded-2xl border-2 border-nature-200 bg-nature-50 max-w-full"
-          style={{ touchAction: 'none', maxWidth: '100%', height: 'auto' }}
+          style={{ touchAction: 'none' }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         />
       </div>
 
-      {/* Mobile controls */}
       <div className="grid grid-cols-3 gap-1 max-w-[120px] mx-auto mb-4">
         {[['↑', [0, -1]], ['', null], ['↓', [0, 1]], ['←', [-1, 0]], ['', null], ['→', [1, 0]]].map(([label, d], i) => (
           d ? (
@@ -208,27 +199,25 @@ export default function SnakeGame({ onClose }) {
       </div>
 
       {!started && !gameOver && (
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={startGame} className="btn-primary mb-3">
+        <button onClick={startGame} className="btn-primary mb-3">
           ابدأ اللعب 🎮
-        </motion.button>
+        </button>
       )}
 
       {gameOver && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-3">
+        <div className="mb-3">
           <p className="text-lg font-bold text-warm-700 mb-1">انتهت اللعبة! نقاطك: {score} 🎯</p>
           <div className="flex gap-2 justify-center">
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={startGame} className="btn-primary text-sm">
+            <button onClick={startGame} className="btn-primary text-sm">
               العب مرة أخرى 🔄
-            </motion.button>
+            </button>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <button onClick={onClose} className="btn-ghost text-warm-400 text-sm">
         إغلاق ↩
       </button>
-
-      <p className="text-warm-300 text-xs mt-2">استخدم الأسهم أو السحب للتحكم</p>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, LayoutDashboard, User } from 'lucide-react';
 import { useChallenge } from '../context/ChallengeContext';
@@ -7,7 +6,6 @@ import { useAuth } from '../context/AuthContext';
 import LevelNode from '../components/LevelNode';
 import ProgressBar from '../components/ProgressBar';
 import TaskModal from '../components/TaskModal';
-import AIAssistant from '../components/AIAssistant';
 
 // Nature elements distributed across the map
 const NATURE_ELEMENTS = [
@@ -51,15 +49,13 @@ export default function MapPage() {
     <div className="min-h-screen bg-gradient-to-b from-sky-light via-nature-50 to-sand-100 pb-24 relative" dir="rtl">
       {/* Nature background decorations */}
       {NATURE_ELEMENTS.map((el, i) => (
-        <motion.div
+        <div
           key={i}
           className="fixed text-3xl pointer-events-none select-none opacity-25 z-0"
           style={el.pos}
-          animate={{ y: [0, -6, 0], rotate: [-2, 2, -2] }}
-          transition={{ duration: 4 + el.delay * 2, repeat: Infinity, delay: el.delay, ease: 'easeInOut' }}
         >
           {el.icon}
-        </motion.div>
+        </div>
       ))}
 
       {/* Progress bar */}
@@ -67,31 +63,25 @@ export default function MapPage() {
 
       {/* Challenge failed banner */}
       {challenge.failed && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="bg-red-50 border-b border-red-200 text-center py-3 px-4">
+        <div className="bg-red-50 border-b border-red-200 text-center py-3 px-4">
           <p className="text-red-600 font-semibold">😔 انتهى التحدي — واجهت صعوبة هذه المرة</p>
           <Link to="/setup" className="text-red-500 text-sm underline">ابدأ تحدياً جديداً</Link>
-        </motion.div>
+        </div>
       )}
 
       {/* All 30 completed banner */}
       {challenge.completedAll && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="bg-nature-50 border-b border-nature-200 text-center py-4 px-4">
+        <div className="bg-nature-50 border-b border-nature-200 text-center py-4 px-4">
           <div className="text-4xl mb-1">🏆</div>
           <p className="text-nature-700 font-bold font-display text-lg">أتممت التحدي!</p>
           <p className="text-nature-600 text-sm">أنجزت 30 يوماً متتالياً. أنت رائع! 🌟</p>
-        </motion.div>
+        </div>
       )}
 
       {/* Map content */}
       <div className="relative z-10 max-w-md mx-auto px-4 pt-4 pb-10">
         {/* Header info */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card mb-6 flex items-center gap-3"
-        >
+        <div className="card mb-6 flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-nature-100 flex items-center justify-center text-2xl flex-shrink-0">
             {user?.avatar ? (
               <img src={user.avatar} className="w-full h-full object-cover rounded-2xl" alt="avatar" />
@@ -105,7 +95,7 @@ export default function MapPage() {
             <p className="text-2xl font-display font-bold text-nature-600">{stats?.completed + stats?.compensated || 0}</p>
             <p className="text-xs text-warm-400">/ 30 يوم</p>
           </div>
-        </motion.div>
+        </div>
 
         {/* Legend */}
         <div className="flex gap-3 flex-wrap justify-center mb-6 text-xs text-warm-500">
@@ -125,12 +115,7 @@ export default function MapPage() {
         {/* Winding path rows */}
         <div className="space-y-2 relative">
           {rows.map((row, rowIdx) => (
-            <motion.div
-              key={rowIdx}
-              initial={{ opacity: 0, x: row.reversed ? -20 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: rowIdx * 0.05, duration: 0.4 }}
-            >
+            <div key={rowIdx}>
               {/* Row container with winding path hint */}
               <div className={`flex items-center gap-3 ${row.reversed ? 'flex-row-reverse' : 'flex-row'} relative`}>
                 {/* Path connector line */}
@@ -155,20 +140,16 @@ export default function MapPage() {
                   />
                 </div>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Missed days compensation notice */}
         {stats && stats.missed > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-6 bg-red-50 border border-red-200 rounded-2xl p-4 text-center"
-          >
+          <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl p-4 text-center">
             <p className="text-red-600 font-semibold text-sm">⚠️ عندك {stats.missed} يوم فائت</p>
             <p className="text-red-400 text-xs mt-1">انقر على الأيام الحمراء لتعويضها</p>
-          </motion.div>
+          </div>
         )}
       </div>
 
@@ -177,8 +158,7 @@ export default function MapPage() {
         <TaskModal day={selectedDay} onClose={() => setSelectedDay(null)} />
       )}
 
-      {/* AI Assistant */}
-      <AIAssistant />
+
 
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-sand-200 z-30">

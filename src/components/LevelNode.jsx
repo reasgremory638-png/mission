@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+
 
 const STATUS_CONFIG = {
   locked: {
@@ -38,17 +38,12 @@ const STATUS_CONFIG = {
   },
 };
 
-export default function LevelNode({ day, onClick, index }) {
+export default function LevelNode({ day, onClick }) {
   const config = STATUS_CONFIG[day.status] || STATUS_CONFIG.locked;
   const isClickable = day.status === 'available' || day.status === 'missed';
 
   return (
-    <motion.button
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.03, type: 'spring', stiffness: 200 }}
-      whileHover={isClickable ? { scale: 1.15 } : {}}
-      whileTap={isClickable ? { scale: 0.9 } : {}}
+    <button
       onClick={() => isClickable && onClick(day)}
       disabled={!isClickable}
       title={`اليوم ${day.id}`}
@@ -68,10 +63,8 @@ export default function LevelNode({ day, onClick, index }) {
 
       {/* Pulse ring for available */}
       {day.status === 'available' && (
-        <motion.span
+        <span
           className="absolute inset-0 rounded-full border-2 border-nature-400"
-          animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0, 0.8] }}
-          transition={{ duration: 2, repeat: Infinity }}
         />
       )}
 
@@ -79,6 +72,6 @@ export default function LevelNode({ day, onClick, index }) {
       <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-warm-700 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none z-10">
         يوم {day.id}
       </div>
-    </motion.button>
+    </button>
   );
 }

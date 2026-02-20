@@ -1,12 +1,8 @@
-import { motion } from 'framer-motion';
-
 export default function ProgressBar({ stats, challengeTitle }) {
   const percentage = stats ? Math.round(((stats.completed + stats.compensated) / 30) * 100) : 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className="bg-white/80 backdrop-blur-sm border-b border-sand-200 px-4 py-3 sticky top-0 z-30"
     >
       <div className="max-w-2xl mx-auto">
@@ -34,16 +30,14 @@ export default function ProgressBar({ stats, challengeTitle }) {
         {/* Progress bar */}
         <div className="flex items-center gap-2">
           <div className="flex-1 bg-sand-200 rounded-full h-3 overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${percentage}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+            <div
               className="h-full bg-gradient-to-r from-nature-400 to-nature-600 rounded-full relative"
+              style={{ width: `${percentage}%` }}
             >
               {percentage > 0 && (
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-2 border-nature-500 translate-x-1/2" />
               )}
-            </motion.div>
+            </div>
           </div>
           <span className="text-xs font-bold text-warm-600 min-w-[40px] text-right">
             {percentage}%
@@ -57,6 +51,6 @@ export default function ProgressBar({ stats, challengeTitle }) {
           <span>اليوم الثلاثون</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

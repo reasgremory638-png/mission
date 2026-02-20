@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { MapPin, LayoutDashboard, User, Camera, Save, Loader2, RefreshCw } from 'lucide-react';
+import { MapPin, LayoutDashboard, User, Camera, Save, RefreshCw } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useChallenge } from '../context/ChallengeContext';
 
@@ -69,18 +68,12 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-light via-nature-50 to-sand-100 pb-24" dir="rtl">
-      {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm sticky top-0 z-20 border-b border-sand-200 px-4 py-4">
         <h1 className="font-display text-xl font-bold text-warm-700 text-center">👤 حسابي</h1>
       </div>
 
       <div className="max-w-lg mx-auto px-4 pt-6 space-y-5">
-        {/* Avatar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card-glass text-center"
-        >
+        <div className="card-glass text-center">
           <div className="relative inline-block mb-3">
             <div className="w-24 h-24 rounded-3xl bg-nature-100 border-2 border-nature-200 overflow-hidden mx-auto flex items-center justify-center">
               {user?.avatar ? (
@@ -99,137 +92,67 @@ export default function Profile() {
           </div>
           <p className="font-display font-bold text-warm-700 text-lg">{user?.name}</p>
           <p className="text-warm-400 text-sm">{user?.email}</p>
-        </motion.div>
+        </div>
 
-        {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="card space-y-4"
-        >
+        <div className="card space-y-4">
           <h2 className="font-display font-semibold text-warm-700">المعلومات الشخصية</h2>
-
           <div>
             <label className="block text-sm font-medium text-warm-600 mb-1.5">الاسم</label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={e => handleChange('name', e.target.value)}
-              className="input-field"
-            />
+            <input type="text" value={form.name} onChange={e => handleChange('name', e.target.value)} className="input-field" />
             {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-warm-600 mb-1.5">البريد الإلكتروني</label>
-            <input
-              type="email"
-              value={form.email}
-              onChange={e => handleChange('email', e.target.value)}
-              className="input-field"
-              dir="ltr"
-            />
+            <input type="email" value={form.email} onChange={e => handleChange('email', e.target.value)} className="input-field" dir="ltr" />
             {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-warm-600 mb-1.5">المنطقة الزمنية</label>
-            <select
-              value={form.timezone}
-              onChange={e => handleChange('timezone', e.target.value)}
-              className="input-field"
-              dir="ltr"
-            >
-              {TIMEZONES.map(tz => (
-                <option key={tz} value={tz}>{tz}</option>
-              ))}
+            <select value={form.timezone} onChange={e => handleChange('timezone', e.target.value)} className="input-field" dir="ltr">
+              {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
             </select>
           </div>
-
           <hr className="border-sand-200" />
           <h3 className="font-medium text-warm-600 text-sm">تغيير كلمة المرور (اختياري)</h3>
-
           <div>
             <label className="block text-sm font-medium text-warm-600 mb-1.5">كلمة المرور الجديدة</label>
-            <input
-              type="password"
-              value={form.password}
-              onChange={e => handleChange('password', e.target.value)}
-              placeholder="اتركه فارغاً إذا لا تريد التغيير"
-              className="input-field"
-              dir="ltr"
-            />
+            <input type="password" value={form.password} onChange={e => handleChange('password', e.target.value)} placeholder="اتركه فارغاً إذا لا تريد التغيير" className="input-field" dir="ltr" />
             {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password}</p>}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-warm-600 mb-1.5">تأكيد كلمة المرور</label>
-            <input
-              type="password"
-              value={form.confirmPassword}
-              onChange={e => handleChange('confirmPassword', e.target.value)}
-              placeholder="أعد كتابة كلمة المرور"
-              className="input-field"
-              dir="ltr"
-            />
+            <input type="password" value={form.confirmPassword} onChange={e => handleChange('confirmPassword', e.target.value)} placeholder="أعد كتابة كلمة المرور" className="input-field" dir="ltr" />
             {errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{errors.confirmPassword}</p>}
           </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+          <button
             onClick={handleSave}
             className={`btn-primary w-full flex items-center justify-center gap-2 ${saved ? 'bg-nature-600' : ''}`}
           >
             {saved ? '✅ تم الحفظ!' : <><Save size={16} /> حفظ التغييرات</>}
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
-        {/* Challenge management */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="card space-y-3"
-        >
+        <div className="card space-y-3">
           <h2 className="font-display font-semibold text-warm-700">إدارة التحدي</h2>
-
           {!confirmReset ? (
-            <button
-              onClick={handleReset}
-              className="w-full py-3 rounded-2xl border-2 border-red-200 text-red-500 font-medium hover:bg-red-50 transition-colors flex items-center justify-center gap-2"
-            >
+            <button onClick={handleReset} className="w-full py-3 rounded-2xl border-2 border-red-200 text-red-500 font-medium hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
               <RefreshCw size={16} /> إعادة ضبط التحدي
             </button>
           ) : (
             <div className="bg-red-50 rounded-2xl p-4 border border-red-200">
               <p className="text-red-600 font-medium text-sm mb-3 text-center">⚠️ هل أنت متأكد؟ ستُحذف جميع بياناتك<br/>ولا يمكن التراجع عن هذا القرار!</p>
               <div className="flex gap-2">
-                <button onClick={handleReset} className="flex-1 py-2.5 bg-red-500 text-white rounded-xl font-semibold">
-                  نعم، أعد الضبط
-                </button>
-                <button onClick={() => setConfirmReset(false)} className="flex-1 py-2.5 bg-sand-200 text-warm-600 rounded-xl font-semibold hover:bg-sand-300">
-                  إلغاء
-                </button>
+                <button onClick={handleReset} className="flex-1 py-2.5 bg-red-500 text-white rounded-xl font-semibold">نعم، أعد الضبط</button>
+                <button onClick={() => setConfirmReset(false)} className="flex-1 py-2.5 bg-sand-200 text-warm-600 rounded-xl font-semibold hover:bg-sand-300">إلغاء</button>
               </div>
             </div>
           )}
-
-          <button
-            onClick={() => { logout(); resetChallenge(); }}
-            className="w-full py-3 rounded-2xl text-warm-400 font-medium hover:text-warm-600 transition-colors text-sm"
-          >
+          <button onClick={() => { logout(); resetChallenge(); }} className="w-full py-3 rounded-2xl text-warm-400 font-medium hover:text-warm-600 transition-colors text-sm">
             تسجيل الخروج 👋
           </button>
-        </motion.div>
+        </div>
 
-        {/* Theme section (future) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="card opacity-60"
-        >
+        <div className="card opacity-60">
           <h2 className="font-display font-semibold text-warm-500 mb-2">🎨 الثيم (قريباً)</h2>
           <div className="flex gap-3">
             {[
@@ -244,10 +167,9 @@ export default function Profile() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-sand-200 z-30">
         <div className="flex justify-around max-w-md mx-auto py-2">
           <Link to="/map" className="flex flex-col items-center gap-0.5 p-2 text-warm-400 hover:text-warm-600 transition-colors">

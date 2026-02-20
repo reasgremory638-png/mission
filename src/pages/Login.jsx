@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
@@ -33,50 +32,31 @@ export default function Login() {
 
         {/* Floating elements */}
         {['🌿', '🌸', '🍃', '🌼', '✨'].map((em, i) => (
-          <motion.div
+          <div
             key={i}
-            className="absolute text-2xl opacity-40"
+            className="absolute text-2xl opacity-40 animate-pulse"
             style={{ left: `${15 + i * 18}%`, top: `${10 + (i % 3) * 15}%` }}
-            animate={{ y: [-8, 8, -8], rotate: [-5, 5, -5] }}
-            transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
           >
             {em}
-          </motion.div>
+          </div>
         ))}
 
         {/* Clouds */}
-        <motion.div
-          className="absolute top-12 left-0 opacity-60"
-          animate={{ x: ['0%', '5%', '0%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        >
+        <div className="absolute top-12 left-0 opacity-60">
           <div className="text-6xl">☁️</div>
-        </motion.div>
-        <motion.div
-          className="absolute top-20 right-0 opacity-40"
-          animate={{ x: ['0%', '-5%', '0%'] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        >
+        </div>
+        <div className="absolute top-20 right-0 opacity-40">
           <div className="text-4xl">☁️</div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Login Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative z-10 w-full max-w-md"
-      >
+      <div className="relative z-10 w-full max-w-md">
         {/* Logo / Hero */}
         <div className="text-center mb-8">
-          <motion.div
-            animate={{ y: [-5, 5, -5] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="text-7xl mb-4 inline-block"
-          >
+          <div className="text-7xl mb-4 inline-block">
             🗺️
-          </motion.div>
+          </div>
           <h1 className="font-display text-4xl font-bold text-warm-700 mb-2">Mission Path</h1>
           <p className="text-warm-500 text-lg">رحلة 30 يوم نحو عادة جديدة</p>
         </div>
@@ -113,23 +93,17 @@ export default function Login() {
             </div>
 
             {error && (
-              <motion.p
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-500 text-sm text-center bg-red-50 rounded-xl p-2"
-              >
+              <p className="text-red-500 text-sm text-center bg-red-50 rounded-xl p-2">
                 {error}
-              </motion.p>
+              </p>
             )}
 
-            <motion.button
+            <button
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               className="btn-primary w-full text-lg mt-2"
             >
               ابدأ المهمة 🚀
-            </motion.button>
+            </button>
           </form>
 
           <p className="text-center text-warm-400 text-xs mt-4">
@@ -141,22 +115,19 @@ export default function Login() {
         <div className="mt-6 grid grid-cols-3 gap-3 text-center">
           {[
             { icon: '🗺️', label: 'خريطة المهام' },
-            { icon: '🤖', label: 'مساعد AI' },
+            { icon: '📊', label: 'تتبع التقدم' },
             { icon: '🐍', label: 'مكافأة لعبة' },
           ].map((f, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1 }}
               className="bg-white/50 rounded-2xl p-3"
             >
               <div className="text-2xl mb-1">{f.icon}</div>
               <p className="text-xs text-warm-600 font-medium">{f.label}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
