@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #f0f7ee;
+  color: #3e2f1c;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-nature-500 text-white font-semibold rounded-2xl
+           hover:bg-nature-600 active:scale-95 transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100
+           shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-sand-100 text-warm-700 font-semibold rounded-2xl
+           hover:bg-sand-200 active:scale-95 transition-all duration-200
+           border border-sand-300 shadow-sm hover:shadow-md;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 text-warm-600 font-medium rounded-xl
+           hover:bg-warm-400/10 active:scale-95 transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-sand-50 rounded-3xl shadow-md border border-sand-200 p-5;
+  }
+
+  .card-glass {
+    @apply bg-white/70 backdrop-blur-sm rounded-3xl shadow-lg border border-white/80 p-5;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border-2 border-sand-200 rounded-2xl
+           text-warm-800 placeholder-warm-400 focus:outline-none
+           focus:border-nature-400 transition-colors duration-200;
+  }
+
+  .textarea-field {
+    @apply w-full px-4 py-3 bg-white border-2 border-sand-200 rounded-2xl
+           text-warm-800 placeholder-warm-400 focus:outline-none
+           focus:border-nature-400 transition-colors duration-200 resize-none;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #d4a76a transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #d4a76a;
+    border-radius: 999px;
+  }
+}
+
+/* Day node states */
+.day-node-available {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(76, 175, 80, 0);
+  }
+}
+
+/* Floating animation for decorative elements */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 20px));
+  }
+}
+
+.animate-drift {
+  animation: drift linear infinite;
+}
+
+/* Custom scrollbar for modals */
+.modal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: #d4a76a;
+  border-radius: 4px;
+}
